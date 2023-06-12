@@ -1,6 +1,7 @@
 package task.test.sqa.restassured;
 
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -16,8 +17,7 @@ public class RestAssuredUtil {
     }
 
     public Response get(Pair<String, String> param, String endPoint){
-        return given()
-                .pathParam(param.getLeft(), param.getRight())
+        return pathParam(param)
                 .get(endPoint);
     }
 
@@ -27,29 +27,35 @@ public class RestAssuredUtil {
                 .get(endpoint);
     }
 
-    public Response doPost(String body, String endpoint){
+    public Response post(String body, String endpoint){
         return given()
                 .body(body)
                 .post(endpoint);
     }
 
     public Response put(String body, Pair<String, String> idParam, String endpoint){
-        return given()
-                .body(body)
-                .pathParam(idParam.getLeft(), idParam.getRight())
+        return bodyAndPathParam(body, idParam)
                 .put(endpoint);
     }
 
     public Response patch(String body, Pair<String, String> idParam, String endpoint){
-        return given()
-                .body(body)
-                .pathParam(idParam.getLeft(), idParam.getRight())
+        return bodyAndPathParam(body, idParam)
                 .patch(endpoint);
     }
 
     public Response delete(Pair<String, String> idParam, String endpoint){
-        return given()
-                .pathParam(idParam.getLeft(), idParam.getRight())
+        return pathParam(idParam)
                 .delete(endpoint);
+    }
+
+    private RequestSpecification bodyAndPathParam(String body, Pair<String, String> idParam){
+        return given()
+                .body(body)
+                .pathParam(idParam.getLeft(), idParam.getRight());
+    }
+
+    private RequestSpecification pathParam(Pair<String, String> idParam){
+        return given()
+                .pathParam(idParam.getLeft(), idParam.getRight());
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+
 import org.aeonbits.owner.ConfigFactory;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
@@ -84,7 +85,7 @@ public class JsonPlaceHolderTests {
     @Test
     void testPost() throws JsonProcessingException {
         String body = postAsJson(DataGen.getNewPost());
-        Response response = RestAssuredUtil.doPost(body, "posts");
+        Response response = RestAssuredUtil.post(body, "posts");
         assertEquals(201, response.statusCode());
     }
 
@@ -96,7 +97,7 @@ public class JsonPlaceHolderTests {
     @ParameterizedTest
     @MethodSource("invalidBodies")
     void testPostWithEmptyBodies(String body) throws JsonProcessingException {
-        Response response = RestAssuredUtil.doPost(body, "posts");
+        Response response = RestAssuredUtil.post(body, "posts");
         assertEquals(201, response.statusCode());
     }
 
